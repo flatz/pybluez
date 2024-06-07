@@ -168,7 +168,7 @@ def interruptwait():
 
 class BBCocoaSleeper(NSObject):
     def init(self):
-        self = super().init()
+        self = objc.super(BBCocoaSleeper, self).init()
         self.timedout = False
         return self
 
@@ -199,7 +199,7 @@ class BBFileLikeObjectReader(NSObject):
     """
 
     def initWithFileLikeObject_(self, fileobj):
-        self = super().init()
+        self = objc.super(BBFileLikeObjectReader, self).init()
         self.__fileobj = fileobj
         return self
     initWithFileLikeObject_ = objc.selector(initWithFileLikeObject_,
@@ -225,7 +225,7 @@ class BBFileLikeObjectWriter(NSObject):
     """
 
     def initWithFileLikeObject_(self, fileobj):
-        self = super().init()
+        self = objc.super(BBFileLikeObjectWriter, self).init()
         self.__fileobj = fileobj
         return self
     initWithFileLikeObject_ = objc.selector(initWithFileLikeObject_,

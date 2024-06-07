@@ -339,6 +339,9 @@ class _SyncDeviceInquiry:
 
         # set inquiry attributes
         self._inquiry.updatenames = getnames
+
+        # XXX: Looks like `length` is not working anymore. We will use `timeout`
+        # instead, see below.
         self._inquiry.length = duration
 
         # start the inquiry
@@ -352,7 +355,7 @@ class _SyncDeviceInquiry:
 
         # wait until the inquiry is complete
         self._inquiring = True
-        _macutil.waituntil(lambda: not self._inquiring)
+        _macutil.waituntil(lambda: not self._inquiring, timeout = duration)
 
         # if error occured during inquiry, raise exception
         if self._inquiryerr != _macutil.kIOReturnSuccess:
@@ -399,7 +402,7 @@ class _AsyncDeviceInquiry(Foundation.NSObject):
                 "to perform device discovery. This class was introduced in " +\
                 "Mac OS X 10.4, are you running an earlier version?")
 
-        self = super().init()
+        self = objc.super(_AsyncDeviceInquiry, self).init()
         self._inquiry = \
             _IOBluetooth.IOBluetoothDeviceInquiry.inquiryWithDelegate_(self)
 
@@ -439,8 +442,7 @@ class _AsyncDeviceInquiry(Foundation.NSObject):
         return self._inquiry.foundDevices()
 
     def __del__(self):
-        super().dealloc()
-
+        objc.super(_AsyncDeviceInquiry, self).dealloc()
 
     #
     # delegate methods follow (these are called by the internal
